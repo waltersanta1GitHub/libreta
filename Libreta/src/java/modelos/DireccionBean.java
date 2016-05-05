@@ -42,7 +42,7 @@ public class DireccionBean {
         this._habilitada = _habilitada;
     }
 
-    public DireccionBean(int _id, String _direccion, int _idpersona) {
+    public DireccionBean( String _direccion, int _idpersona) {
         this._id = 0;
         this._direccion = _direccion;
         this._idpersona = _idpersona;

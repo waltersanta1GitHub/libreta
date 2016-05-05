@@ -12,7 +12,7 @@ CREATE  TABLE IF NOT EXISTS `listacontactosdb`.`persona` (
   `idPersona` INT(11) NOT NULL AUTO_INCREMENT ,
   `Nombre` VARCHAR(45) NOT NULL ,
   `Edad` VARCHAR(45) NULL DEFAULT NULL ,
-  `Sexo` CHAR(1) NULL DEFAULT NULL DEFAULT b'x' ,
+  `Sexo` CHAR(1) NULL DEFAULT NULL DEFAULT 'x' ,
   `Documento` VARCHAR(45) NOT NULL ,
   `habilitado` BIT(1) NOT NULL DEFAULT b'1' ,
   PRIMARY KEY (`idPersona`) )

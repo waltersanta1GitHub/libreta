@@ -45,26 +45,33 @@ public class DAO implements IDAO {
 
     // Personas
     @Override
-    public boolean AgregarPersona(PersonaBean nueva) {
+    public int AgregarPersona(PersonaBean nueva) {
+
+        int returnedId = 0;
 
         try {
             String insertPersona = "INSERT INTO `listacontactosdb`.`persona` (`Nombre`, `Edad`, `Sexo`, `Documento`, `Habilitado`) VALUES (?,?,?,?,?);";
 
-            PreparedStatement insercion = conectar().prepareStatement(insertPersona);
+            PreparedStatement insercion = conectar().prepareStatement(insertPersona, Statement.RETURN_GENERATED_KEYS);
             insercion.setString(1, nueva.getNombre());
             insercion.setString(2, nueva.getEdad());
             insercion.setString(3, String.valueOf(nueva.getSexo()));
             insercion.setString(4, nueva.getDocumento());
             insercion.setBoolean(5, nueva.isHabilitada());
-            insercion.executeUpdate();
+            int executeUpdate = insercion.executeUpdate();
 
-            return true;
+            ResultSet rs = insercion.getGeneratedKeys();
+            if (rs.next()) {
+                returnedId = rs.getInt(1);
+            }
+
+            return returnedId;
 
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        return false;
+        return returnedId;
     }
 
     @Override
@@ -151,7 +158,7 @@ public class DAO implements IDAO {
                 itemPersona.setId(resultado.getInt("idPersona"));
                 itemPersona.setNombre(resultado.getString("Nombre"));
                 itemPersona.setEdad(resultado.getString("Edad"));
-                itemPersona.setSexo( resultado.getString("Sexo").charAt(0));
+                itemPersona.setSexo(resultado.getString("Sexo").charAt(0));
                 itemPersona.setDocumento(resultado.getString("Documento"));
                 itemPersona.setHabilitada(resultado.getBoolean("Habilitado"));
 
@@ -306,7 +313,7 @@ public class DAO implements IDAO {
     public DireccionBean BuscarDireccion(int iddirecciones, int idpersona) {
 
         DireccionBean retornaDireccion;
-        retornaDireccion = new DireccionBean(0, null, 0);
+        retornaDireccion = new DireccionBean(null, 0);
         try {
             String selectDireccion = " SELECT `idDirecciones`,`Direccion`,`Persona_idPersona`,`Habilitado`"
                     + " FROM `listacontactosdb`.`telefonos` "
@@ -332,7 +339,7 @@ public class DAO implements IDAO {
 
     @Override
     public boolean AgregarDireccionElectronica(CorreoElectronicoBean correoenuevo) {
-        
+
         try {
             String insertDireccionEE = "INSERT INTO `listacontactosdb`.`correoselectronicos`"
                     + " (`CorreoElectronico`,`Persona_idPersona`,`Habilitado`) VALUES (?,?,?);";
@@ -352,7 +359,7 @@ public class DAO implements IDAO {
         }
 
         return false;
-        
+
     }
 
     @Override
@@ -362,7 +369,7 @@ public class DAO implements IDAO {
 
     @Override
     public void ActualizarDireccionElectronica(CorreoElectronicoBean actuaizadiree) {
-        
+
         try {
             String actualizaDireccion = "UPDATE `listacontactosdb`.`direcciones` SET "
                     + "`CorreoElectronico` = ? , `Persona_idPersona` = ?, `Habilitado`=?"
@@ -379,20 +386,19 @@ public class DAO implements IDAO {
             Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        
     }
 
     @Override
     public CorreoElectronicoBean BuscarDireccionElectronica(int iddireccionee, int idpersona) {
-        
-         CorreoElectronicoBean retornaCorreoElectronico;
-        retornaCorreoElectronico = new CorreoElectronicoBean(0, null, 0);
+
+        CorreoElectronicoBean retornaCorreoElectronico;
+        retornaCorreoElectronico = new CorreoElectronicoBean(null, 0);
         try {
             String selectDireccion = " SELECT `idCorreosElectronicos`,`CorreoElectronico`,`Persona_idPersona`,`Habilitado`"
                     + " FROM `listacontactosdb`.`correoselectronicos` "
                     + "WHERE `idPersona` =" + idpersona
                     + "AND `idCorreosElectronicos` = " + iddireccionee + ";";
-            
+
             Statement smtp = conectar().createStatement();
             ResultSet resultado = smtp.executeQuery(selectDireccion);
             while (resultado.next()) {
@@ -408,7 +414,7 @@ public class DAO implements IDAO {
             Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return retornaCorreoElectronico;
-        
+
     }
 
 }

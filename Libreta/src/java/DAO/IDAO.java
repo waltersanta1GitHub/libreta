@@ -8,7 +8,7 @@ import modelos.TelefonoBean;
 
 public interface IDAO {
 
-    public boolean AgregarPersona(PersonaBean nueva);
+    public int AgregarPersona(PersonaBean nueva);
 
     public boolean EliminarPersona(int idpersona);
 
