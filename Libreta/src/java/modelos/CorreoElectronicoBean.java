@@ -42,8 +42,8 @@ public class CorreoElectronicoBean {
         this._habilitada = _habilitada;
     }
 
-    public CorreoElectronicoBean(String _correoElectronico, int _idpersona) {
-        this._id = 0;
+    public CorreoElectronicoBean(int _id,String _correoElectronico, int _idpersona) {
+        this._id = _id;
         this._correoElectronico = _correoElectronico;
         this._idpersona = _idpersona;
         this._habilitada = true;

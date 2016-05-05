@@ -60,9 +60,7 @@ public class DAO implements IDAO {
 
             return true;
 
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
+        } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -87,9 +85,7 @@ public class DAO implements IDAO {
             actua.setInt(6, actualiza.getId());
             actua.executeUpdate();
 
-        } catch (SQLException ex) {
-            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
+        } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -129,9 +125,7 @@ public class DAO implements IDAO {
             }
             smtp.close();
 
-        } catch (SQLException ex) {
-            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
+        } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return retornaPersona;
@@ -157,7 +151,7 @@ public class DAO implements IDAO {
                 itemPersona.setId(resultado.getInt("idPersona"));
                 itemPersona.setNombre(resultado.getString("Nombre"));
                 itemPersona.setEdad(resultado.getString("Edad"));
-                itemPersona.setSexo('M');
+                itemPersona.setSexo( resultado.getString("Sexo").charAt(0));
                 itemPersona.setDocumento(resultado.getString("Documento"));
                 itemPersona.setHabilitada(resultado.getBoolean("Habilitado"));
 
@@ -168,9 +162,7 @@ public class DAO implements IDAO {
 
             smtp.close();
 
-        } catch (SQLException ex) {
-            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
+        } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -194,9 +186,7 @@ public class DAO implements IDAO {
 
             return true;
 
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
+        } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -218,9 +208,7 @@ public class DAO implements IDAO {
             actua.setInt(5, actualizatel.getId());
             actua.executeUpdate();
 
-        } catch (SQLException ex) {
-            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
+        } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -228,8 +216,8 @@ public class DAO implements IDAO {
 
     @Override
     public boolean EliminarTelefono(int idtelefono, int idpersona) {
-       
-        TelefonoBean tel= BuscarTelefono(idtelefono, idpersona);
+
+        TelefonoBean tel = BuscarTelefono(idtelefono, idpersona);
         tel.setHabilitada(false);
         ActualizarTelefono(tel);
         return true;
@@ -240,12 +228,12 @@ public class DAO implements IDAO {
         TelefonoBean retornaTelefono;
         retornaTelefono = new TelefonoBean(null, 0, null);
         try {
-            String selectPersona = " SELECT `idTelefonos`,`Telefono`,`Ubicacion`,`Persona_idPersona`,`Habilitado`"
+            String selectTelefono = " SELECT `idTelefonos`,`Telefono`,`Ubicacion`,`Persona_idPersona`,`Habilitado`"
                     + " FROM `listacontactosdb`.`telefonos` "
                     + "WHERE `idPersona` =" + idpersona
                     + "AND `idTelefonos` = " + telefono + ";";
             Statement smtp = conectar().createStatement();
-            ResultSet resultado = smtp.executeQuery(selectPersona);
+            ResultSet resultado = smtp.executeQuery(selectTelefono);
             while (resultado.next()) {
 
                 retornaTelefono.setId(resultado.getInt("idTelefonos"));
@@ -256,33 +244,171 @@ public class DAO implements IDAO {
 
             }
             smtp.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
+        } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return retornaTelefono;
     }
 
-
     @Override
     public boolean AgregarDireccion(DireccionBean direccionnueva) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+        try {
+            String insertDireccion = "INSERT INTO `listacontactosdb`.`direcciones`"
+                    + " (`Direccion`,`Persona_idPersona`,`Habilitado`) VALUES (?,?,?);";
+
+            PreparedStatement insercion = conectar().prepareStatement(insertDireccion);
+            insercion.setString(1, direccionnueva.getDireccion());
+            insercion.setInt(2, direccionnueva.getIdpersona());
+            insercion.setBoolean(3, direccionnueva.isHabilitada());
+            insercion.executeUpdate();
+
+            return true;
+
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return false;
     }
 
     @Override
     public boolean EliminarDireccion(int iddirecciones, int idpersona) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+        DireccionBean dir = BuscarDireccion(iddirecciones, idpersona);
+        dir.setHabilitada(false);
+        ActualizarDireccion(dir);
+        return true;
     }
 
     @Override
     public void ActualizarDireccion(DireccionBean actuaizadir) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+        try {
+            String actualizaDireccion = "UPDATE `listacontactosdb`.`direcciones` SET "
+                    + "`Direccion` = ? , `Persona_idPersona` = ?, `Habilitado`=?"
+                    + "WHERE `idDirecciones` =?";
+
+            PreparedStatement actua = conectar().prepareStatement(actualizaDireccion);
+            actua.setString(1, actuaizadir.getDireccion());
+            actua.setInt(2, actuaizadir.getIdpersona());
+            actua.setBoolean(3, actuaizadir.isHabilitada());
+            actua.setInt(5, actuaizadir.getId());
+            actua.executeUpdate();
+
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     @Override
     public DireccionBean BuscarDireccion(int iddirecciones, int idpersona) {
+
+        DireccionBean retornaDireccion;
+        retornaDireccion = new DireccionBean(0, null, 0);
+        try {
+            String selectDireccion = " SELECT `idDirecciones`,`Direccion`,`Persona_idPersona`,`Habilitado`"
+                    + " FROM `listacontactosdb`.`telefonos` "
+                    + "WHERE `idPersona` =" + idpersona
+                    + "AND `idDirecciones` = " + iddirecciones + ";";
+            Statement smtp = conectar().createStatement();
+            ResultSet resultado = smtp.executeQuery(selectDireccion);
+            while (resultado.next()) {
+
+                retornaDireccion.setId(resultado.getInt("idDirecciones"));
+                retornaDireccion.setDireccion(resultado.getString("Direccion"));
+                retornaDireccion.setIdpersona(resultado.getInt("Persona_idPersona"));
+                retornaDireccion.setHabilitada(resultado.getBoolean("Habilitado"));
+
+            }
+            smtp.close();
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return retornaDireccion;
+
+    }
+
+    @Override
+    public boolean AgregarDireccionElectronica(CorreoElectronicoBean correoenuevo) {
+        
+        try {
+            String insertDireccionEE = "INSERT INTO `listacontactosdb`.`correoselectronicos`"
+                    + " (`CorreoElectronico`,`Persona_idPersona`,`Habilitado`) VALUES (?,?,?);";
+
+            PreparedStatement insercion = conectar().prepareStatement(insertDireccionEE);
+            insercion.setString(1, correoenuevo.getCorreoElectronico());
+            insercion.setInt(2, correoenuevo.getIdpersona());
+            insercion.setBoolean(3, correoenuevo.isHabilitada());
+            insercion.executeUpdate();
+
+            return true;
+
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return false;
+        
+    }
+
+    @Override
+    public boolean EliminarDireccionElectronica(int iddireccionee, int idpersona) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void ActualizarDireccionElectronica(CorreoElectronicoBean actuaizadiree) {
+        
+        try {
+            String actualizaDireccion = "UPDATE `listacontactosdb`.`direcciones` SET "
+                    + "`CorreoElectronico` = ? , `Persona_idPersona` = ?, `Habilitado`=?"
+                    + "WHERE `idDirecciones` =?";
+
+            PreparedStatement actua = conectar().prepareStatement(actualizaDireccion);
+            actua.setString(1, actuaizadiree.getCorreoElectronico());
+            actua.setInt(2, actuaizadiree.getIdpersona());
+            actua.setBoolean(3, actuaizadiree.isHabilitada());
+            actua.setInt(5, actuaizadiree.getId());
+            actua.executeUpdate();
+
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        
+    }
+
+    @Override
+    public CorreoElectronicoBean BuscarDireccionElectronica(int iddireccionee, int idpersona) {
+        
+         CorreoElectronicoBean retornaCorreoElectronico;
+        retornaCorreoElectronico = new CorreoElectronicoBean(0, null, 0);
+        try {
+            String selectDireccion = " SELECT `idCorreosElectronicos`,`CorreoElectronico`,`Persona_idPersona`,`Habilitado`"
+                    + " FROM `listacontactosdb`.`correoselectronicos` "
+                    + "WHERE `idPersona` =" + idpersona
+                    + "AND `idCorreosElectronicos` = " + iddireccionee + ";";
+            
+            Statement smtp = conectar().createStatement();
+            ResultSet resultado = smtp.executeQuery(selectDireccion);
+            while (resultado.next()) {
+
+                retornaCorreoElectronico.setId(resultado.getInt("idCorreosElectronicos"));
+                retornaCorreoElectronico.setCorreoElectronico(resultado.getString("CorreoElectronico"));
+                retornaCorreoElectronico.setIdpersona(resultado.getInt("Persona_idPersona"));
+                retornaCorreoElectronico.setHabilitada(resultado.getBoolean("Habilitado"));
+
+            }
+            smtp.close();
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return retornaCorreoElectronico;
+        
     }
 
 }

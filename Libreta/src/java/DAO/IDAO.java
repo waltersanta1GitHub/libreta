@@ -33,6 +33,14 @@ public interface IDAO {
     public void ActualizarDireccion(DireccionBean actuaizadir);
 
     public DireccionBean BuscarDireccion(int iddirecciones, int idpersona);
+    
+    public boolean AgregarDireccionElectronica(CorreoElectronicoBean correoenuevo);
+
+    public boolean EliminarDireccionElectronica(int iddireccionee, int idpersona);
+
+    public void ActualizarDireccionElectronica(CorreoElectronicoBean actuaizadiree);
+
+    public CorreoElectronicoBean BuscarDireccionElectronica(int iddireccionee, int idpersona);
    
         
     
