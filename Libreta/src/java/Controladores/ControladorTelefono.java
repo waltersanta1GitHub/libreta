@@ -61,6 +61,8 @@ public class ControladorTelefono extends HttpServlet {
                     request.getParameter("ubicaciontxt"));
 
             contexto.AgregarTelefono(nuevoTel);
+            
+            request.setAttribute("listaPersonas", contexto.ListarPersonas());
             RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
             rd.forward(request, response);
 

@@ -3,7 +3,6 @@ package Controladores;
 import DAO.DAO;
 import DAO.IDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -38,6 +37,10 @@ public class ControladorLibreta extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        request.setAttribute("listaPersonas", contexto.ListarPersonas());
+        RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
+        rd.forward(request, response);
+
     }
 
     /**
@@ -51,11 +54,16 @@ public class ControladorLibreta extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String idSeleccionado = request.getParameter("seleccionadotxt");
+        if (idSeleccionado != null) {
 
-        PersonaBean ejemplo = new PersonaBean(request.getParameter("nombretxt"), request.getParameter("cctxt"), request.getParameter("edadtxt"), 'M');
-        contexto.AgregarPersona(ejemplo);
-        
-        request.setAttribute("myResultado", contexto.ListarPersonas());
+            PersonaBean seleccionadaPersona = contexto.BuscarPersona(Integer.parseInt(idSeleccionado));
+            if (seleccionadaPersona != null) {
+                request.getSession().setAttribute("myPersona", seleccionadaPersona);
+
+            }
+        }
+        request.setAttribute("listaPersonas", contexto.ListarPersonas());
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
         rd.forward(request, response);
 

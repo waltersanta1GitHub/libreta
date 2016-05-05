@@ -60,6 +60,7 @@ public class ControladorDireccion extends HttpServlet {
             DireccionBean nuevaDir = new DireccionBean(request.getParameter("direcciontxt"),  persona.getId());
             contexto.AgregarDireccion(nuevaDir);
 
+            request.setAttribute("listaPersonas", contexto.ListarPersonas());
             RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
             rd.forward(request, response);
         }

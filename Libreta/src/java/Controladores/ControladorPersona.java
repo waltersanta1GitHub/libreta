@@ -23,10 +23,7 @@ public class ControladorPersona extends HttpServlet {
     public ControladorPersona() {
         this.contexto = new DAO();
     }
-    
-    
-   
-    
+
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -38,21 +35,18 @@ public class ControladorPersona extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
-        PersonaBean nuevaPersona = new PersonaBean(request.getParameter("nombretxt"), request.getParameter("cctxt"), request.getParameter("edadtxt"), request.getParameter("sexotxt").charAt(0) );
-        int identidad= contexto.AgregarPersona(nuevaPersona);        
+
+        PersonaBean nuevaPersona = new PersonaBean(request.getParameter("nombretxt"), request.getParameter("cctxt"), request.getParameter("edadtxt"), request.getParameter("sexotxt").charAt(0));
+        int identidad = contexto.AgregarPersona(nuevaPersona);
         nuevaPersona.setId(identidad);
-        
+
         request.getSession().setAttribute("myPersona", nuevaPersona);
         request.setAttribute("listaPersonas", contexto.ListarPersonas());
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
         rd.forward(request, response);
 
     }
-    
-    
 
-   
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -64,8 +58,20 @@ public class ControladorPersona extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         
-    }     
+
+        String idSeleccionado = request.getParameter("seleccionadotxt");
+        PersonaBean seleccionadaPersona = contexto.BuscarPersona(Integer.parseInt(idSeleccionado));
+        if (seleccionadaPersona != null) {
+
+            request.getSession().setAttribute("myPersona", seleccionadaPersona);
+            request.setAttribute("myResultado", contexto.ListarPersonas());
+
+        }
+
+        RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
+        rd.forward(request, response);
+
+    }
 
     /**
      * Returns a short description of the servlet.
@@ -75,6 +81,6 @@ public class ControladorPersona extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    } 
+    }
 
 }

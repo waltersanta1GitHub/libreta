@@ -63,6 +63,7 @@ public class ControladorCorreoElectronico extends HttpServlet {
 
             contexto.AgregarDireccionElectronica(nuevoCorreo);
 
+            request.setAttribute("listaPersonas", contexto.ListarPersonas());
             RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
             rd.forward(request, response);
         }
