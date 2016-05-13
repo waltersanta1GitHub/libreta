@@ -35,12 +35,18 @@ public class ControladorPersona extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        PersonaBean personaActual;
+        int identidad = 0;
 
-        PersonaBean nuevaPersona = new PersonaBean(request.getParameter("nombretxt"), request.getParameter("cctxt"), request.getParameter("edadtxt"), request.getParameter("sexotxt").charAt(0));
-        int identidad = contexto.AgregarPersona(nuevaPersona);
-        nuevaPersona.setId(identidad);
-
-        request.getSession().setAttribute("myPersona", nuevaPersona);
+        if (request.getParameter("personaidtxt").toString() != null) {
+            
+            identidad = Integer.parseInt(request.getParameter("personaidtxt"));
+            personaActual = contexto.BuscarPersona(identidad);
+        } else {
+            personaActual = new PersonaBean(request.getParameter("nombretxt"), request.getParameter("cctxt"), request.getParameter("edadtxt"), request.getParameter("sexotxt").charAt(0));
+            identidad = contexto.AgregarPersona(personaActual);
+        }
+        request.getSession().setAttribute("myPersona", personaActual);
         request.setAttribute("listaPersonas", contexto.ListarPersonas());
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
         rd.forward(request, response);
