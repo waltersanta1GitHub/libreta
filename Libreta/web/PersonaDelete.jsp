@@ -21,7 +21,7 @@
 
         <div class="container">
             <header>
-                <h1>Editar Contacto</h1>
+                <h1>Eliminar Contacto</h1>
             </header>
             <article class="form-group">
 
@@ -39,7 +39,7 @@
                     Nombre:<input id="nombretxt"  type="text" placeholder="Nombre" name="nombretxt" class="form-control"/>
                     Sexo:<input id="sexotxt" type="text" name="sexotxt" class="form-control"/>
                     Edad:<input id="edadtxt"  type="number" placeholder="Edad" name="edadtxt" class="form-control"/>
-                    <input type="submit" value="Guardar" class="btn btn-success btn-md">            
+                    <input type="submit" value="Eliminar" class="btn btn-success btn-md">            
                 </form>
 
 

@@ -20,44 +20,54 @@
     </head>
     <body>
 
+        <div class="container">
 
-        <button type="button" class="btn btn-info btn-lg">
-            <a href="Persona.jsp" > Agregar Nuevo Contacto </a>
-        </button>
-        <button type="button" class="btn btn-info btn-lg">
-            <a href="PersonaEdit.jsp" > Editar Contacto </a>
-        </button>
-        
-        
+            <button type="button" class="btn btn-info btn-md">
+                <a href="Persona.jsp" > Agregar Nuevo Contacto </a>
+            </button>
+            <button type="button" class="btn btn-info btn-md">
+                <a href="PersonaEdit.jsp" > Editar Contacto </a>
+            </button>       
+            <button type="button" class="btn btn-info btn-md">
+                <a href="PersonaDelete.jsp" > Eliminar Contacto </a>
+            </button>             
 
-        <%
-            IDAO contexto;
-            contexto = new DAO();
-            request.setAttribute("listaPersonas", contexto.ListarPersonas());
-        %>
 
-        <div>            
-            <div>
-                <h2> Lista de Contactos </h2>
 
-                <table>            
-                    <tr>                       
-                        <th>Nombre</th>
-                        <th>Documeto</th>
-                        <th>Edad</th>
-                        <th>Sexo</th>
-                    </tr>
-                    <c:forEach items="${requestScope.listaPersonas}" var="element"> 
-                        <tr>                           
-                            <td>${element.nombre}</td>
-                            <td>${element.documento}</td>
-                            <td>${element.edad}</td>
-                            <td>${element.sexo}</td>
-                        </tr>
-                    </c:forEach>
-                </table>
+            <%
+                IDAO contexto;
+                contexto = new DAO();
+                request.setAttribute("listaPersonas", contexto.ListarPersonas());
+            %>
 
-            </div>            
+            <div>            
+                <div>
+                    <h2> Lista de Contactos </h2>
+
+                    <table class="table">  
+                        <thead class="thead-inverse">
+                            <tr>                       
+                                <th>Nombre</th>
+                                <th>Documeto</th>
+                                <th>Edad</th>
+                                <th>Sexo</th>
+                            </tr>    
+                        </thead>
+                        <tbody>
+                            <c:forEach items="${requestScope.listaPersonas}" var="element"> 
+                                <tr>                           
+                                    <td>${element.nombre}</td>
+                                    <td>${element.documento}</td>
+                                    <td>${element.edad}</td>
+                                    <td>${element.sexo}</td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
+
+                </div>            
+            </div>
+
         </div>
     </body>
 </html>

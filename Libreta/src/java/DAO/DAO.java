@@ -81,7 +81,7 @@ public class DAO implements IDAO {
 
             String actualizaPersona = "UPDATE `listacontactosdb`.`persona` SET "
                     + "`Nombre` = ? ,`Edad` = ?, `Sexo` = ?,`Documento` = ? , `Habilitado`=?"
-                    + "WHERE `idPersona` =?";
+                    + " WHERE `idPersona` =?";
 
             PreparedStatement actua = conectar().prepareStatement(actualizaPersona);
             actua.setString(1, actualiza.getNombre());
@@ -237,8 +237,8 @@ public class DAO implements IDAO {
         try {
             String selectTelefono = " SELECT `idTelefonos`,`Telefono`,`Ubicacion`,`Persona_idPersona`,`Habilitado`"
                     + " FROM `listacontactosdb`.`telefonos` "
-                    + "WHERE `idPersona` =" + idpersona
-                    + "AND `idTelefonos` = " + telefono + ";";
+                    + " WHERE `idPersona` =" + idpersona
+                    + " AND `idTelefonos` = " + telefono + ";";
             Statement smtp = conectar().createStatement();
             ResultSet resultado = smtp.executeQuery(selectTelefono);
             while (resultado.next()) {
@@ -261,7 +261,7 @@ public class DAO implements IDAO {
     public boolean AgregarDireccion(DireccionBean direccionnueva) {
 
         try {
-            String insertDireccion = "INSERT INTO `listacontactosdb`.`direcciones`"
+            String insertDireccion = "INSERT INTO `listacontactosdb`.`direcciones` "
                     + " (`Direccion`,`Persona_idPersona`,`Habilitado`) VALUES (?,?,?);";
 
             PreparedStatement insercion = conectar().prepareStatement(insertDireccion);
@@ -293,8 +293,8 @@ public class DAO implements IDAO {
 
         try {
             String actualizaDireccion = "UPDATE `listacontactosdb`.`direcciones` SET "
-                    + "`Direccion` = ? , `Persona_idPersona` = ?, `Habilitado`=?"
-                    + "WHERE `idDirecciones` =?";
+                    + " `Direccion` = ? , `Persona_idPersona` = ?, `Habilitado`=?"
+                    + " WHERE `idDirecciones` =?";
 
             PreparedStatement actua = conectar().prepareStatement(actualizaDireccion);
             actua.setString(1, actuaizadir.getDireccion());
@@ -317,8 +317,8 @@ public class DAO implements IDAO {
         try {
             String selectDireccion = " SELECT `idDirecciones`,`Direccion`,`Persona_idPersona`,`Habilitado`"
                     + " FROM `listacontactosdb`.`telefonos` "
-                    + "WHERE `idPersona` =" + idpersona
-                    + "AND `idDirecciones` = " + iddirecciones + ";";
+                    + " WHERE `idPersona` =" + idpersona
+                    + " AND `idDirecciones` = " + iddirecciones + ";";
             Statement smtp = conectar().createStatement();
             ResultSet resultado = smtp.executeQuery(selectDireccion);
             while (resultado.next()) {
@@ -341,7 +341,7 @@ public class DAO implements IDAO {
     public boolean AgregarDireccionElectronica(CorreoElectronicoBean correoenuevo) {
 
         try {
-            String insertDireccionEE = "INSERT INTO `listacontactosdb`.`correoselectronicos`"
+            String insertDireccionEE = "INSERT INTO `listacontactosdb`.`correoselectronicos` "
                     + " (`CorreoElectronico`,`Persona_idPersona`,`Habilitado`) VALUES (?,?,?);";
 
             PreparedStatement insercion = conectar().prepareStatement(insertDireccionEE);
@@ -373,7 +373,7 @@ public class DAO implements IDAO {
         try {
             String actualizaDireccion = "UPDATE `listacontactosdb`.`direcciones` SET "
                     + "`CorreoElectronico` = ? , `Persona_idPersona` = ?, `Habilitado`=?"
-                    + "WHERE `idDirecciones` =?";
+                    + " WHERE `idDirecciones` =?";
 
             PreparedStatement actua = conectar().prepareStatement(actualizaDireccion);
             actua.setString(1, actuaizadiree.getCorreoElectronico());
@@ -396,8 +396,8 @@ public class DAO implements IDAO {
         try {
             String selectDireccion = " SELECT `idCorreosElectronicos`,`CorreoElectronico`,`Persona_idPersona`,`Habilitado`"
                     + " FROM `listacontactosdb`.`correoselectronicos` "
-                    + "WHERE `idPersona` =" + idpersona
-                    + "AND `idCorreosElectronicos` = " + iddireccionee + ";";
+                    + " WHERE `idPersona` =" + idpersona
+                    + " AND `idCorreosElectronicos` = " + iddireccionee + ";";
 
             Statement smtp = conectar().createStatement();
             ResultSet resultado = smtp.executeQuery(selectDireccion);

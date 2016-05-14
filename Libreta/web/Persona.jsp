@@ -20,6 +20,20 @@
             <input type="number" placeholder="Edad" name="edadtxt" class="form-control"/>
             <input type="submit" value="Guardar" class="btn btn-success btn-md">
         </form>
+        
+        <div class="form-group">         
+            <button type="button" class="btn btn-info btn-md form-control">
+                <a href="Telefono.jsp" >Agregar Nuevo Telefono </a>
+            </button>
+            <button type="button" class="btn btn-info btn-md form-control">
+                <a href="TelefonoEdit.jsp" >Editar Telefono </a>
+            </button>       
+            <button type="button" class="btn btn-info btn-md form-control">
+                <a href="TelefonoDelete.jsp" >Eliminar Telefono </a>
+            </button>              
+        </div>
+                 
+        
         <footer>
             <button type="button" class="btn btn-info btn-lg">
                 <a href="index.jsp" > Ir a Inicio </a>

@@ -17,9 +17,9 @@ import modelos.PersonaBean;
  */
 @WebServlet(name = "ControladorPersona", urlPatterns = {"/ControladorPersona"})
 public class ControladorPersona extends HttpServlet {
-
+    
     IDAO contexto;
-
+    
     public ControladorPersona() {
         this.contexto = new DAO();
     }
@@ -37,20 +37,35 @@ public class ControladorPersona extends HttpServlet {
             throws ServletException, IOException {
         PersonaBean personaActual;
         int identidad = 0;
-
-        if (request.getParameter("personaidtxt").toString() != null) {
+        
+        
+        String strUri = request.getRequestURL().toString();
+        
+        String strId = request.getParameter("personaidtxt");
+        
+        if (!strId.isEmpty()) {
             
             identidad = Integer.parseInt(request.getParameter("personaidtxt"));
             personaActual = contexto.BuscarPersona(identidad);
+            if (personaActual != null) {
+               
+                personaActual.setId(identidad);
+                personaActual.setNombre(request.getParameter("nombretxt"));
+                personaActual.setDocumento(request.getParameter("cctxt"));
+                personaActual.setEdad(request.getParameter("edadtxt"));
+                personaActual.setSexo(request.getParameter("sexotxt").charAt(0));
+                contexto.ActualizarPersona(personaActual);
+            }
+            
         } else {
             personaActual = new PersonaBean(request.getParameter("nombretxt"), request.getParameter("cctxt"), request.getParameter("edadtxt"), request.getParameter("sexotxt").charAt(0));
             identidad = contexto.AgregarPersona(personaActual);
         }
-        request.getSession().setAttribute("myPersona", personaActual);
+        request.getSession().setAttribute("myPersona", personaActual);        
         request.setAttribute("listaPersonas", contexto.ListarPersonas());
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
         rd.forward(request, response);
-
+        
     }
 
     /**
@@ -64,19 +79,19 @@ public class ControladorPersona extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
         String idSeleccionado = request.getParameter("seleccionadotxt");
         PersonaBean seleccionadaPersona = contexto.BuscarPersona(Integer.parseInt(idSeleccionado));
         if (seleccionadaPersona != null) {
-
+            
             request.getSession().setAttribute("myPersona", seleccionadaPersona);
             request.setAttribute("myResultado", contexto.ListarPersonas());
-
+            
         }
-
+        
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
         rd.forward(request, response);
-
+        
     }
 
     /**
@@ -88,5 +103,5 @@ public class ControladorPersona extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }
-
+    
 }
