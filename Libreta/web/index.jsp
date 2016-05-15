@@ -23,13 +23,13 @@
         <div class="container">
 
             <button type="button" class="btn btn-info btn-md">
-                <a href="Persona.jsp" > Agregar Nuevo Contacto </a>
+                <a href="persona/Persona.jsp" > Agregar Nuevo Contacto </a>
             </button>
             <button type="button" class="btn btn-info btn-md">
-                <a href="PersonaEdit.jsp" > Editar Contacto </a>
+                <a href="persona/PersonaEdit.jsp" > Editar Contacto </a>
             </button>       
             <button type="button" class="btn btn-info btn-md">
-                <a href="PersonaDelete.jsp" > Eliminar Contacto </a>
+                <a href="persona/PersonaDelete.jsp" > Eliminar Contacto </a>
             </button>             
 
 
